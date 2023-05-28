@@ -6,9 +6,13 @@ class BudgetRepository {
     return Budget(
       id: "",
       userId: "defaultId",
-      totalMoney: 24000,
-      spendings: 6000,
-      expenses: 13000,
+      totalMoney: 0,
+      spendings: 0,
+      expenses: 0,
     );
+  }
+
+  Future<void> setTotalBudget(Budget budget) async {
+    //TODO post total budget data to db
   }
 }

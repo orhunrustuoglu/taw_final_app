@@ -17,7 +17,8 @@ class ProgressBar extends StatelessWidget {
             RichText(
                 text: TextSpan(children: [
               TextSpan(
-                text: (budget.spendings + budget.expenses).toStringAsFixed(2),
+                text: (budget.totalMoney - (budget.spendings + budget.expenses))
+                    .toStringAsFixed(2),
                 style: const TextStyle(
                     color: primaryColor,
                     fontWeight: FontWeight.bold,
@@ -36,10 +37,7 @@ class ProgressBar extends StatelessWidget {
                 text: TextSpan(children: [
               TextSpan(
                 text: budget.totalMoney.toStringAsFixed(2),
-                style: const TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
+                style: const TextStyle(color: primaryColor, fontSize: 18),
               ),
               const TextSpan(
                 text: "  ₺",

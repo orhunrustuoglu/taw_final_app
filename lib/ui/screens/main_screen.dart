@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 // import 'package:taw_final_app/data/constants/constant_images.dart';
 import 'package:taw_final_app/ui/providers/auth_provider.dart';
 import 'package:taw_final_app/ui/providers/budget_provider.dart';
+import 'package:taw_final_app/ui/screens/add_cost_screen.dart';
+import 'package:taw_final_app/ui/screens/edit_budget_screen.dart';
 import 'package:taw_final_app/ui/widgets/custom_button.dart';
 import '/data/constants/constant_colors.dart';
 import '/ui/widgets/border_card.dart';
@@ -28,10 +30,8 @@ class MainScreen extends StatelessWidget {
         }),
         actions: [
           IconButton(
-              onPressed: () {
-                //TODO navigate to the settings screen
-                print("Settings");
-              },
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(EditBudgetScreen.routeName),
               icon: const Icon(Icons.edit_outlined)),
         ],
       ),
@@ -49,10 +49,9 @@ class MainScreen extends StatelessWidget {
                     return Center(
                       child: CustomButton(
                           verticalPadding: 10,
-                          text: "Enter Bugdet",
-                          onPressed: () {
-                            print("Enter Bugdet");
-                          }),
+                          text: "Enter Budget",
+                          onPressed: () => Navigator.pushNamed(
+                              context, EditBudgetScreen.routeName)),
                     );
                   }
                   return ProgressBar(
@@ -144,10 +143,15 @@ class MainScreen extends StatelessWidget {
                       null
                       :
                       //if a previous budget data exists
-                      () {
-                          //TODO code enter budget screen
-                          print("Add Cost");
-                        }),
+                      //no named routes to get bottom-to-top animation
+                      () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) {
+                                return const AddCostScreen();
+                              },
+                            ),
+                          )),
             )),
       ),
     );
