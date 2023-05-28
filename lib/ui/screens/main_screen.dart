@@ -5,6 +5,7 @@ import 'package:taw_final_app/ui/providers/auth_provider.dart';
 import 'package:taw_final_app/ui/providers/budget_provider.dart';
 import 'package:taw_final_app/ui/screens/add_cost_screen.dart';
 import 'package:taw_final_app/ui/screens/edit_budget_screen.dart';
+import 'package:taw_final_app/ui/widgets/cost_card.dart';
 import 'package:taw_final_app/ui/widgets/custom_button.dart';
 import '/data/constants/constant_colors.dart';
 import '/ui/widgets/border_card.dart';
@@ -19,11 +20,6 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // leading: Padding(
-        //     padding: const EdgeInsets.only(left: 10),
-        //     child: Consumer<AuthProvider>(builder: (context, authProvider, _) {
-        //       return const Image(image: logo);
-        //     })),
         centerTitle: true,
         title: Consumer<AuthProvider>(builder: (context, authProvider, _) {
           return Text("Hello ${authProvider.getUser.fullName} 👋");
@@ -37,7 +33,7 @@ class MainScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
+        child: ListView(
           children: [
             FilledCard(
                 height: 120,
@@ -120,13 +116,26 @@ class MainScreen extends StatelessWidget {
                 )
               ],
             ),
-            const Expanded(
-                child: Center(
-              child: Text(
-                "No cost history exists...",
-                style: TextStyle(color: accentColor),
-              ),
-            ))
+            const SizedBox(height: 15),
+            Consumer<BudgetProvider>(builder: (context, budgetProvider, _) {
+              if (budgetProvider.getBudget.costs.isEmpty) {
+                return const Expanded(
+                    child: Center(
+                  child: Text(
+                    "No cost history exists...",
+                    style: TextStyle(color: accentColor),
+                  ),
+                ));
+              }
+              return Column(
+                children: budgetProvider.getBudget.costs
+                    .map((c) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: CostCard(cost: c),
+                        ))
+                    .toList(),
+              );
+            })
           ],
         ),
       ),

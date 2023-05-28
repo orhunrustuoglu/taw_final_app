@@ -26,7 +26,7 @@ class EditBudgetScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              "Edit Budget",
+              "Edit Budget 💰",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
             ),
             const SizedBox(height: 20),
@@ -51,12 +51,12 @@ class EditBudgetScreen extends StatelessWidget {
                       var budgetProvider =
                           Provider.of<BudgetProvider>(context, listen: false);
                       budgetProvider.setTotalBudget(Budget(
-                        id: budgetProvider.getBudget.id,
-                        userId: budgetProvider.getBudget.userId,
-                        totalMoney: double.parse(totalBudgetController.text),
-                        spendings: budgetProvider.getBudget.spendings,
-                        expenses: budgetProvider.getBudget.expenses,
-                      ));
+                          id: budgetProvider.getBudget.id,
+                          userId: budgetProvider.getBudget.userId,
+                          totalMoney: double.parse(totalBudgetController.text),
+                          spendings: budgetProvider.getBudget.spendings,
+                          expenses: budgetProvider.getBudget.expenses,
+                          costs: budgetProvider.getBudget.costs));
 
                       //then, close the screen
                       Navigator.pop(context);

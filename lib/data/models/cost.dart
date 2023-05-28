@@ -8,7 +8,7 @@ class Cost {
   Cost({
     required this.id,
     required this.budgetId,
-    this.costType = CostType.item,
+    this.costType = CostType.spending,
     required this.description,
     required this.sumOfMoney,
   });
