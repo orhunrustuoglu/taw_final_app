@@ -41,10 +41,7 @@ class ProgressBar extends StatelessWidget {
               ),
               const TextSpan(
                 text: "  ₺",
-                style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14),
+                style: TextStyle(color: primaryColor, fontSize: 14),
               ),
             ])),
           ],

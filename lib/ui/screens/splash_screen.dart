@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:taw_final_app/data/constants/constant_images.dart';
-import 'package:taw_final_app/ui/providers/auth_provider.dart';
-import 'package:taw_final_app/ui/providers/budget_provider.dart';
-import 'package:taw_final_app/ui/screens/main_screen.dart';
+import 'package:taw_final_app/ui/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -13,24 +10,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  //
+  // Future<void> serverOperations(BuildContext ctx) async {
+  //   var authProvider = Provider.of<AuthProvider>(context, listen: false);
+  //   await authProvider.retrieveToken().then((_) async {
+  //     await authProvider.signInWithToken().then((_) {
+  //       if (Provider.of<AuthProvider>(context, listen: false).getUser.id !=
+  //           "") {
+  //         Navigator.pushReplacementNamed(context, MainScreen.routeName);
+  //       }
+  //       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+  //     });
+  //   });
+  // }
+
   @override
   void initState() {
     super.initState();
-
-    //first, fetch the user data
-    Provider.of<AuthProvider>(context, listen: false)
-        .getUserData()
-        .then(
-            //then, fetch budget data of fetched user
-            (_) => Provider.of<BudgetProvider>(context, listen: false)
-                .getBudgetData())
-        .then(
-            //last, navigate to the main screen
-            //TODO remove delayed when db connected
-            (_) => Future.delayed(
-                const Duration(seconds: 1),
-                () => Navigator.pushReplacementNamed(
-                    context, MainScreen.routeName)));
+    Future.delayed(const Duration(seconds: 1),
+        () => Navigator.pushReplacementNamed(context, LoginScreen.routeName));
   }
 
   @override

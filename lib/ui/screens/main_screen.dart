@@ -119,13 +119,12 @@ class MainScreen extends StatelessWidget {
             const SizedBox(height: 15),
             Consumer<BudgetProvider>(builder: (context, budgetProvider, _) {
               if (budgetProvider.getBudget.costs.isEmpty) {
-                return const Expanded(
-                    child: Center(
+                return const Center(
                   child: Text(
                     "No cost history exists...",
                     style: TextStyle(color: accentColor),
                   ),
-                ));
+                );
               }
               return Column(
                 children: budgetProvider.getBudget.costs

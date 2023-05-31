@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:taw_final_app/data/models/budget.dart';
+import 'package:taw_final_app/ui/providers/auth_provider.dart';
 
 import 'package:taw_final_app/ui/providers/budget_provider.dart';
 import 'package:taw_final_app/ui/widgets/custom_button.dart';
@@ -48,15 +49,35 @@ class EditBudgetScreen extends StatelessWidget {
                     //have to check whether the total there is a budget entered or not
                     onPressed: () {
                       //update total budget
-                      var budgetProvider =
-                          Provider.of<BudgetProvider>(context, listen: false);
-                      budgetProvider.setTotalBudget(Budget(
-                          id: budgetProvider.getBudget.id,
-                          userId: budgetProvider.getBudget.userId,
-                          totalMoney: double.parse(totalBudgetController.text),
-                          spendings: budgetProvider.getBudget.spendings,
-                          expenses: budgetProvider.getBudget.expenses,
-                          costs: budgetProvider.getBudget.costs));
+
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .retrieveToken();
+                      Provider.of<BudgetProvider>(context, listen: false)
+                          .setBudget(
+                              Budget(
+                                  id: "",
+                                  userId:
+                                      Provider
+                                              .of<
+                                                      AuthProvider>(
+                                                  context,
+                                                  listen: false)
+                                          .getUser
+                                          .id,
+                                  totalMoney: double.parse(totalBudgetController
+                                      .text),
+                                  costs: []),
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .getUser,
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .getIdToken);
+                      // budgetProvider.setTotalBudget(Budget(
+                      //     id: budgetProvider.getBudget.id,
+                      //     userId: budgetProvider.getBudget.userId,
+                      //     totalMoney: double.parse(totalBudgetController.text),
+                      //     spendings: budgetProvider.getBudget.spendings,
+                      //     expenses: budgetProvider.getBudget.expenses,
+                      //     costs: budgetProvider.getBudget.costs));
 
                       //then, close the screen
                       Navigator.pop(context);

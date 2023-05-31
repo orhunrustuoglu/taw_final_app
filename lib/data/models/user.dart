@@ -5,7 +5,7 @@ class User {
 
   factory User.fromJson(Map json) => User(
         id: json["localId"],
-        fullName: json["fullName"],
+        fullName: json["fullName"] ?? "undefined",
         email: json["email"],
       );
 

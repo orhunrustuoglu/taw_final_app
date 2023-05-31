@@ -5,11 +5,13 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Function? onPressed;
   final double verticalPadding;
+  final bool isLoading;
   const CustomButton(
       {super.key,
       required this.text,
       this.onPressed,
-      this.verticalPadding = 20});
+      this.verticalPadding = 20,
+      this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,17 @@ class CustomButton extends StatelessWidget {
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: verticalPadding),
-          child: Text(
-            text,
-            style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-          ),
+          child: isLoading
+              ? const CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.white,
+                )
+              : Text(
+                  text,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
         ));
   }
 }
