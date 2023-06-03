@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:taw_final_app/data/constants/constant_colors.dart';
 import 'package:taw_final_app/data/models/cost.dart';
 import 'package:taw_final_app/data/models/cost_type_enum.dart';
+import 'package:taw_final_app/ui/providers/auth_provider.dart';
 import 'package:taw_final_app/ui/providers/budget_provider.dart';
 import 'package:taw_final_app/ui/widgets/cost_type_card.dart';
 import 'package:taw_final_app/ui/widgets/custom_button.dart';
@@ -81,11 +82,18 @@ class _AddCostScreenState extends State<AddCostScreen> {
                   child: CustomButton(
                     text: "Save&Close",
                     onPressed: () {
+                      var authProvider =
+                          Provider.of<AuthProvider>(context, listen: false);
+                      var budgetProvider =
+                          Provider.of<BudgetProvider>(context, listen: false);
+
                       //first, send to backend
-                      Provider.of<BudgetProvider>(context, listen: false)
-                          .addCost(Cost(
+                      budgetProvider.addCost(
+                          authProvider.getUser,
+                          authProvider.getIdToken,
+                          Cost(
                               id: "",
-                              budgetId: "",
+                              budgetId: authProvider.getUser.id,
                               costType: costType,
                               description: descController.text,
                               sumOfMoney: double.parse(costController.text)));

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:taw_final_app/data/models/user_response.dart';
 import 'package:taw_final_app/data/repositories/snackbar_repository.dart';
+import 'package:taw_final_app/ui/providers/budget_provider.dart';
 import '../screens/main_screen.dart';
 import '/data/models/user.dart';
 import '/data/repositories/auth_repository.dart';
@@ -8,12 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   var _user = User(id: "", fullName: "", email: "");
-  var _userResponse =
-      UserResponse(localId: "", email: "", displayName: "", idToken: "");
+  // var _userResponse =
+  //     UserResponse(localId: "", email: "", displayName: "", idToken: "");
   String _idToken = "";
 
   User get getUser => _user;
-  UserResponse get getUserResponse => _userResponse;
+  // UserResponse get getUserResponse => _userResponse;
   String get getIdToken => _idToken;
 
   var authRepository = AuthRepository();
@@ -46,11 +48,18 @@ class AuthProvider with ChangeNotifier {
 
     //if success
     if (userResponse.localId != "") {
-      _userResponse = userResponse;
+      _idToken = userResponse.idToken;
       notifyListeners();
       await getUserData(userResponse);
-      Future.delayed(Duration.zero,
-          () => Navigator.pushReplacementNamed(context, MainScreen.routeName));
+
+      //then, get budget data of the user
+      Future.delayed(Duration.zero, () {
+        Provider.of<BudgetProvider>(context, listen: false)
+            .getBudgetData(_user, _idToken)
+            .then((_) =>
+                //lastly, navigate to the inner app
+                Navigator.pushReplacementNamed(context, MainScreen.routeName));
+      });
       return;
     }
 

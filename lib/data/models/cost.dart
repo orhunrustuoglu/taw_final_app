@@ -14,9 +14,9 @@ class Cost {
   });
 
   factory Cost.fromJson(Map json) => Cost(
-        id: json["localId"],
+        id: json["budgetId"],
         budgetId: json["budgetId"],
-        costType: json["costType"],
+        costType: json["costType"] as CostType,
         description: json["description"],
         sumOfMoney: json["sumOfMoney"],
       );
@@ -24,7 +24,7 @@ class Cost {
   Map toJson(Cost cost) => {
         "localId": cost.id,
         "budgetId": cost.budgetId,
-        "costType": cost.costType,
+        "costType": cost.costType.toString(),
         "description": cost.description,
         "sumOfMoney": cost.sumOfMoney,
       };

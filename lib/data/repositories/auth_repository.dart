@@ -24,7 +24,6 @@ class AuthRepository {
             "idToken": idToken,
           },
         ));
-    print(response.body);
 
     //if success
     if (response.statusCode == 200) {
@@ -58,7 +57,6 @@ class AuthRepository {
         "Content-Type": "application/json",
       },
     );
-    print(response.body);
 
     //if successed
     if (response.statusCode == 200) {

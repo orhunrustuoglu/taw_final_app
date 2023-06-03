@@ -7,13 +7,21 @@ import 'package:taw_final_app/ui/providers/budget_provider.dart';
 import 'package:taw_final_app/ui/widgets/custom_button.dart';
 import 'package:taw_final_app/ui/widgets/custom_textfield.dart';
 
-class EditBudgetScreen extends StatelessWidget {
+class EditBudgetScreen extends StatefulWidget {
   const EditBudgetScreen({super.key});
   static const routeName = "edit-budget-screen";
 
   @override
+  State<EditBudgetScreen> createState() => _EditBudgetScreenState();
+}
+
+class _EditBudgetScreenState extends State<EditBudgetScreen> {
+  bool isLoading = false;
+
+  @override
   Widget build(BuildContext context) {
     var totalBudgetController = TextEditingController(
+        //set the current budget as default value
         text: Provider.of<BudgetProvider>(context, listen: false)
             .getBudget
             .totalMoney
@@ -45,40 +53,39 @@ class EditBudgetScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: CustomButton(
+                    isLoading: isLoading,
                     text: "Save&Close",
                     //have to check whether the total there is a budget entered or not
                     onPressed: () {
-                      //update total budget
+                      setState(() {
+                        isLoading = true;
+                      });
+                      var budgetProvider =
+                          Provider.of<BudgetProvider>(context, listen: false);
+                      var authProvider =
+                          Provider.of<AuthProvider>(context, listen: false);
+                      //if there is not any previous budget data
+                      if (budgetProvider.getBudget.totalMoney == 0) {
+                        budgetProvider.setBudget(
+                          Budget(
+                              userId: authProvider.getUser.id,
+                              totalMoney: double.parse(
+                                  totalBudgetController.text), //the new value
+                              costs: []),
+                          authProvider.getUser,
+                          authProvider.getIdToken,
+                        );
+                      }
+                      //if there is previous budget data
+                      var tempBudget = budgetProvider.getBudget;
+                      tempBudget.totalMoney = double.parse(totalBudgetController
+                          .text); //update existing budget's totalMoney
+                      budgetProvider.updateBudget(tempBudget,
+                          authProvider.getUser, authProvider.getIdToken);
 
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .retrieveToken();
-                      Provider.of<BudgetProvider>(context, listen: false)
-                          .setBudget(
-                              Budget(
-                                  id: "",
-                                  userId:
-                                      Provider
-                                              .of<
-                                                      AuthProvider>(
-                                                  context,
-                                                  listen: false)
-                                          .getUser
-                                          .id,
-                                  totalMoney: double.parse(totalBudgetController
-                                      .text),
-                                  costs: []),
-                              Provider.of<AuthProvider>(context, listen: false)
-                                  .getUser,
-                              Provider.of<AuthProvider>(context, listen: false)
-                                  .getIdToken);
-                      // budgetProvider.setTotalBudget(Budget(
-                      //     id: budgetProvider.getBudget.id,
-                      //     userId: budgetProvider.getBudget.userId,
-                      //     totalMoney: double.parse(totalBudgetController.text),
-                      //     spendings: budgetProvider.getBudget.spendings,
-                      //     expenses: budgetProvider.getBudget.expenses,
-                      //     costs: budgetProvider.getBudget.costs));
-
+                      setState(() {
+                        isLoading = false;
+                      });
                       //then, close the screen
                       Navigator.pop(context);
                     },

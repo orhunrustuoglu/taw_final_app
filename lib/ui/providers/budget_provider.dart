@@ -7,7 +7,6 @@ import 'package:taw_final_app/data/repositories/budget_repository.dart';
 
 class BudgetProvider with ChangeNotifier {
   var _budget = Budget(
-    id: "",
     userId: "",
     totalMoney: 0,
     costs: [],
@@ -17,34 +16,37 @@ class BudgetProvider with ChangeNotifier {
 
   var budgetRepository = BudgetRepository();
 
-  Future<void> getBudgetData() async {
-    _budget = await budgetRepository.getBudgetData();
+  Future<void> getBudgetData(User user, String idToken) async {
+    _budget = await budgetRepository.getBudgetData(user, idToken);
     notifyListeners();
   }
 
   Future<void> setBudget(Budget budget, User user, String idToken) async {
-    _budget = await budgetRepository.setBudget(budget, user, idToken);
+    await budgetRepository.setBudget(budget, user, idToken);
+    getBudgetData(user, idToken);
     notifyListeners();
   }
 
-  // Future<void> setTotalBudget(Budget budget) async {
-  //   //set the new state to the backend
-  //   await budgetRepository.setTotalBudget(budget);
+  Future<void> updateBudget(Budget budget, User user, String idToken) async {
+    await budgetRepository.updateBudget(budget, user, idToken);
+    getBudgetData(user, idToken);
+    notifyListeners();
+  }
 
-  //   //TODO remove below code (2 lines) when backend connected
-  //   _budget = budget;
-  //   notifyListeners();
+  Future<void> addCost(User user, String idToken, Cost cost) async {
+    //update the costs section on backend
+    await budgetRepository.addCost(user, idToken, cost);
 
-  //   //TODO uncomment when backend connected
-  //   //get the new state from the backend,
-  //   //so its guarantee there is only one state
-  //   //getBudgetData();
-  // }
+    //determine the type of cost
+    if (cost.costType == CostType.expense) {
+      _budget.expenses += cost.sumOfMoney;
+    } else {
+      _budget.spendings += cost.sumOfMoney;
+    }
+    //update the total expenses or spendings section on backend
+    await budgetRepository.updateBudget(_budget, user, idToken);
 
-  Future<void> addCost(Cost cost) async {
-    //update the backend
-    await budgetRepository.addCost(cost);
-    //get the updated backend
-    getBudgetData();
+    // //get the updated backend
+    getBudgetData(user, idToken);
   }
 }
