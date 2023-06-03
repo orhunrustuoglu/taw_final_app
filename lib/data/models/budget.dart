@@ -18,20 +18,23 @@ class Budget {
     //
     //first, convert map data to a list
     var costsList = <Cost>[];
-    json["costs"].forEach((k, v) {
-      //parse the String value of cost type data
-      var costType = CostType.expense;
-      if (v["costType"] == "CostType.spending") {
-        costType = CostType.spending;
-      }
-      //lastly, add the final Cost object to the list
-      costsList.add(Cost(
-          id: k,
-          budgetId: v["budgetId"],
-          costType: costType,
-          description: v["description"],
-          sumOfMoney: v["sumOfMoney"]));
-    });
+
+    if (json["costs"] != null) {
+      (json["costs"]).forEach((k, v) {
+        //parse the String value of cost type data
+        var costType = CostType.expense;
+        if (v["costType"] == "CostType.spending") {
+          costType = CostType.spending;
+        }
+        //lastly, add the final Cost object to the list
+        costsList.add(Cost(
+            id: k,
+            budgetId: v["budgetId"],
+            costType: costType,
+            description: v["description"],
+            sumOfMoney: v["sumOfMoney"]));
+      });
+    }
 
     return Budget(
         userId: json["userId"] ?? "",
