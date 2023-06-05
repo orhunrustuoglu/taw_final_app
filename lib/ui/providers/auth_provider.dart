@@ -10,30 +10,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   var _user = User(id: "", fullName: "", email: "");
-  // var _userResponse =
-  //     UserResponse(localId: "", email: "", displayName: "", idToken: "");
   String _idToken = "";
 
   User get getUser => _user;
-  // UserResponse get getUserResponse => _userResponse;
   String get getIdToken => _idToken;
 
   var authRepository = AuthRepository();
-
-  Future<void> signInWithToken() async {
-    _user = await authRepository.signInWithToken(_idToken);
-    notifyListeners();
-  }
-
-  // Future<void> signUp(User user, String email, password) async {
-  //   _user = await authRepository.signUp(email, password);
-  //   createUserInDb(user);
-  // }
-
-  // Future<void> createUserInDb(User user) async {
-  //   await authRepository.createUserInDb(user, _idToken);
-  //   await getUserData(_userResponse);
-  // }
 
   Future<void> retrieveToken() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -73,4 +55,19 @@ class AuthProvider with ChangeNotifier {
     _user = await authRepository.getUserData(userResponse);
     notifyListeners();
   }
+
+  // Future<void> signInWithToken() async {
+  //   _user = await authRepository.signInWithToken(_idToken);
+  //   notifyListeners();
+  // }
+
+  // Future<void> signUp(User user, String email, password) async {
+  //   _user = await authRepository.signUp(email, password);
+  //   createUserInDb(user);
+  // }
+
+  // Future<void> createUserInDb(User user) async {
+  //   await authRepository.createUserInDb(user, _idToken);
+  //   await getUserData(_userResponse);
+  // }
 }

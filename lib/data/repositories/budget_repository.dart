@@ -18,7 +18,7 @@ class BudgetRepository {
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && response.body != "null") {
       return Budget.fromJson(json.decode(response.body));
     }
 
@@ -32,7 +32,7 @@ class BudgetRepository {
 
   Future<void> setBudget(Budget budget, User user, String idToken) async {
     var url = Uri.parse("$serverUrl/budgets/${user.id}.json?auth=$idToken");
-    await http.put(url,
+    await http.post(url,
         headers: {
           "Content-Type": "application/json",
         },

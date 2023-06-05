@@ -48,9 +48,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     hintText: "Email"),
                 const SizedBox(height: 10),
                 CustomTextField(
-                    controller: passwordController,
-                    iconData: Icons.password,
-                    hintText: "Password"),
+                  controller: passwordController,
+                  iconData: Icons.password,
+                  hintText: "Password",
+                  isObscure: true, //hides the entered text
+                ),
                 const Spacer(),
                 Container(
                   width: double.infinity,

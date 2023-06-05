@@ -10,23 +10,10 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  //
-  // Future<void> serverOperations(BuildContext ctx) async {
-  //   var authProvider = Provider.of<AuthProvider>(context, listen: false);
-  //   await authProvider.retrieveToken().then((_) async {
-  //     await authProvider.signInWithToken().then((_) {
-  //       if (Provider.of<AuthProvider>(context, listen: false).getUser.id !=
-  //           "") {
-  //         Navigator.pushReplacementNamed(context, MainScreen.routeName);
-  //       }
-  //       Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-  //     });
-  //   });
-  // }
-
   @override
   void initState() {
     super.initState();
+    //TODO try signing in with idToken from cache ("idToken" key in sharedPref)
     Future.delayed(const Duration(seconds: 1),
         () => Navigator.pushReplacementNamed(context, LoginScreen.routeName));
   }
